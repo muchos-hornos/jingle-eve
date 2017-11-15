@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <title>Jingle bells</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style>
+    .jumbotron { 
+        background-color: #333; /* Dark grey matches navbar */
+        color: #ffffff;
+    }
+    .bg-grey {
+        background-color: #f6f6f6;
+    }
+    .bg-dark-grey {
+        background-color: #90999D;
+    }
+    </style>
+  </head>
+  <body>
+
+    <!-- <script src="https://unpkg.com/vue"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"</script></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource"</script></script>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">JingleBells</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="/polls/">Questions</a></li>
+          <li><a href="/polls/add_question/">Add a question</a></li>
+          <li><a href="#">Interviews</a></li>
+        </ul>
+        <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <!-- TODO(ssergey): use eve auth -->
+                {% if user.is_authenticated %}
+                    <p class="navbar-text">Signed in as {{ user.username }}</p>
+                {% else %}
+                    <li><a href="/api-auth/login/">Login</a></li>
+                {% endif %}
+            </li>
+            
+            <li><a href="/api-auth/login/">Logout</a></li>
+        </ul>
+    </div>
+      </div>
+    </nav>
+
+    <div class="jumbotron text-center">
+      <h1>Jingle</h1> 
+      <p>Market research made easy</p>
+    </div> <!-- jumbotron -->
+    
+
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+
+
+<div class="container-fluid bg-grey text-center" id="app-6">
+    <div class="row" v-for="q in questions"> 
+        <div >
+            <span> Q: ${ q['question_text'] } </span>
+            <select>
+              <option disabled value="">Please select one</option>
+              <option v-for="choice in q['choices']" >
+                          ${ choice['text'] }
+              </option>
+          </select>
+          <br>
+        </div>
+  </div>
+    <button class="btn btn-default btn-lg" v-on:click="getQuestions">Get questions
+            </button>
+</div>
+
+
+
+      </div> <!-- div class="col-md-6" -->
+      <div class="col-md-3"></div>
+    </div>
+
+
+        <script>
+    Vue.use(VueResource)
+
+      var app6 = new Vue({
+        el: '#app-6',
+        delimiters: ['${', '}'],
+        data: {
+          q2: {choice_set: [], },
+          questions: [],
+        },
+
+        methods: {
+          getQuestions: function() {
+            console.log('getting');
+            this.$http.get('/api/questions/').then(function(response){
+              this.questions = response.data["_items"];
+              this.q2 = this.questions[0];
+              console.log('received');
+              console.log(JSON.stringify(this.questions));
+            }, function(error){
+                console.log(error.statusText);
+            });
+          },
+        }
+      })
+    </script>
+     
+  </body>
+</html>
+
+
