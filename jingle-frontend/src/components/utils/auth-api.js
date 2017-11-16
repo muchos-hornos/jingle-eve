@@ -3,10 +3,9 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:5000';
 
 export {
-	getQuestions
+    login
 };
 
-function getQuestions() {
-  const url = `${BASE_URL}/api/questions`;
-  return axios.get(url).then(response => response.data);
+function login() {
+    // TODO(ssergey): move auth functionality here.
 }

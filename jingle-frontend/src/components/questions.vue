@@ -1,6 +1,7 @@
 <template>
   <div>
     <app-nav></app-nav>
+  
     <h3 class="text-center">Available questions</h3>
     <hr/>
 
@@ -23,7 +24,11 @@
 
 <script>
 import AppNav from './AppNav';
-import { getQuestions } from '../utils/questions-api';
+import { getQuestions } from './utils/questions-api';
+
+////////////////////
+import axios from 'axios'
+////////////////////////////
 
 export default {
   name: 'questions',
@@ -33,21 +38,51 @@ export default {
   data() {
     return {
       questions: '',
+      token: '',
     };
   },
   methods: {
     isLoggedIn() {
-      //return isLoggedIn();
+      // TODO(ssergey): local storage
+      return this.token != '';
     },
     getQuestions() {
-      getQuestions().then((data) => {
-        console.log(data);
+      console.log("jjj");
+      getQuestions().then((data) => {;
         this.questions = data["_items"];
       });
     },
+
+    login() {
+      // the oauth token api exposed by eve.
+      const auth_url = 'https://localhost:5000/oauth/token';
+      // the client id generated manually by oauth/management api.
+      // It is public and per application.
+      const client_id = "lxsUe5fVf2oUhIZFj9DZA7rAw1eNrTLESYteQW3U";
+
+      axios.post(auth_url, 
+        "client_id=" + client_id + 
+        "&grant_type=password" + 
+        // We hardcore username and password for simplicity.
+        // TODO(ssergey): obtain from login form.
+        "&username=ssergey&password=ss3rg3y",
+       {}).then(response => {
+        this.token = response.data.access_token;
+       });
+      
+    }
   },
   mounted() {
     this.getQuestions();
+    this.login(this);
+    //console.log("XXX sending post");
+    //Vue.axios.post('https://localhost:5000/oauth/token', 
+    //"client_id=lxsUe5fVf2oUhIZFj9DZA7rAw1eNrTLESYteQW3U&grant_type=password&username=ssergey&password=ss3rg3y", // the data to post
+    //{ 
+    //}).then(res => {
+        //console.log('RES', res);
+        
+    //});
   },
 };
 </script>
