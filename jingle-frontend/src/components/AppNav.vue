@@ -6,7 +6,7 @@
     <ul class="nav navbar-nav navbar-right">
       <li>
         <button class="btn btn-danger log" @click="handleLogout()">Log out </button>
-        <button class="btn btn-info log" @click="handleLogin()">Log In</button>
+        <button class="btn btn-info log" @click="login()">Log In</button>
       </li>
     </ul>
   </nav>
@@ -14,6 +14,7 @@
 
 <script>
 //import { isLoggedIn, login, logout } from '../utils/auth';
+import axios from 'axios'
 
 export default {
   name: 'app-nav',
@@ -27,6 +28,24 @@ export default {
     isLoggedIn() {
       return true;
       //return isLoggedIn();
+    },
+    login() {
+      // the oauth token api exposed by eve.
+      const auth_url = 'https://localhost:5000/oauth/token';
+      // the client id generated manually by oauth/management api.
+      // It is public and per application.
+      const client_id = "lxsUe5fVf2oUhIZFj9DZA7rAw1eNrTLESYteQW3U";
+
+      axios.post(auth_url, 
+        "client_id=" + client_id + 
+        "&grant_type=password" + 
+        // We hardcore username and password for simplicity.
+        // TODO(ssergey): obtain from login form.
+        "&username=ssergey&password=ss3rg3y",
+       {}).then(response => {
+        this.token = response.data.access_token;
+       });
+      
     },
   },
 };
