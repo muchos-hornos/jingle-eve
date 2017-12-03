@@ -44,6 +44,7 @@ export default {
         "&username=ssergey&password=ss3rg3y",
        {}).then(response => {
         this.token = response.data.access_token;
+        console.log("XXX");
        });
       
     },
