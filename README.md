@@ -11,4 +11,8 @@ https://docs.mongodb.com/manual/administration/install-community/
 Flask (eve is built on top of flask):
 http://flask.pocoo.org/
 
+To enable dev self signed certs:
+chrome://flags/#allow-insecure-localhost
+click enable on it
+
 
