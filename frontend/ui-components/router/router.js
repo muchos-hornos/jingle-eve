@@ -1,12 +1,25 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import Physician from './physician/physician.vue';
-// import Recruiter from './recruiter/recruiter.vue';
+import Promise from 'promise';
+import nprogress from 'nprogress';
+
 import Questions from '../physician/questions.vue';
 
 Vue.use(VueRouter);
 
-const Physician = { template: '<div><div class="alert alert-info">Physician App</div><router-link to="/physician/questions" class="navbar-brand">Open questions list</router-link><router-view/></div>' };
+const Physician = () => ({
+  // Загружаемый компонент. Значение должно быть Promise
+  component: new Promise((resolve, reject) => {
+    nprogress.start();
+    setTimeout(function () {
+      import(/* webpackChunkName: "physician" */ '../physician/physician.vue').then(res => {
+        nprogress.done();
+        resolve(res);
+      })
+    }, 5000);
+  })
+});
+
 const Recruiter = { template: '<div><div class="alert alert-info">Recruiter App</div><router-view/></div>' };
 
 export default new VueRouter({

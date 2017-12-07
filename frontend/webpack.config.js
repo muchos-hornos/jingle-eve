@@ -1,14 +1,15 @@
-const path = require('path');
 const webpack = require('webpack');
+const path = require('path');
 
 const config = {
   entry: {
-    app: './app.js'
+    app: ['babel-polyfill', './app.js']
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
-    publicPath: '/static/dist',
+    chunkFilename: '[name].bundle.js',
+    publicPath: '/static/',
   },
   resolve: {
     alias: {
