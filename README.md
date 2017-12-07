@@ -15,4 +15,11 @@ To enable dev self signed certs:
 chrome://flags/#allow-insecure-localhost
 click enable on it
 
+For using 'frontend' with eve:
+0. You must have installed nodejs (https://nodejs.org/en/)
+1. Go inside the frontend directory.
+2. Run the command: npm run build. 
+3. Go run.py to start eve-server.
+4. Enjoy!
+
 
