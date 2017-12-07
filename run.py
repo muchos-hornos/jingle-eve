@@ -3,7 +3,7 @@ from flask import send_from_directory
 from flask_sentinel import ResourceOwnerPasswordCredentials, oauth
 from oauth2 import BearerAuth
 
-app = Eve(__name__, static_folder="static")
+app = Eve(__name__, static_url_path="/static", static_folder="frontend/dist")
 
 # Enabled auth when ready
 #app = Eve(__name__, auth=BearerAuth, static_folder="static")
@@ -17,7 +17,7 @@ def restricted_access():
 
 @app.route('/')
 def index():
-    return send_from_directory("static", 'base.html')
+    return send_from_directory("frontend", 'index.html')
 
 if __name__ == '__main__':
 	#app.run()
