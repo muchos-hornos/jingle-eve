@@ -14,5 +14,5 @@ function getQuestions() {
   var config = {
   	headers: {"Authorization": 'Bearer ' + token}
   };
-  return axios.get("http://localhost:5000/api/questions", config).then(response => response.data);
+  return axios.get("api/questions", config).then(response => response.data);
 }

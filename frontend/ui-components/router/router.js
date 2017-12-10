@@ -16,7 +16,7 @@ const Physician = () => ({
         nprogress.done();
         resolve(res);
       })
-    }, 5000);
+    }, 100); // timer simulates async import of module only for demonstration and development testing.
   })
 });
 

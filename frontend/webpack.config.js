@@ -9,7 +9,7 @@ const config = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
-    publicPath: '/static/',
+    publicPath: '/static/'
   },
   resolve: {
     alias: {
@@ -42,9 +42,9 @@ const config = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+  config.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
-  module.exports.plugins = (module.exports.plugins || []).concat([
+  config.plugins = (config.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
@@ -60,6 +60,21 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     })
   ])
+}
+else if (process.env.NODE_ENV === 'development') {
+  config.plugins = (config.plugins || []).concat([
+    new webpack.HotModuleReplacementPlugin()
+  ]);
+  config.devServer = {
+    hot: true,
+    open: true,
+    proxy: { // access to our eve-api
+      "/api": {
+        target: "https://localhost:5000",
+        secure: false
+      }
+    }
+  }
 }
 
 module.exports = config;
